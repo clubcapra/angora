@@ -1,0 +1,10 @@
+@startuml
+
+package "ANGORA" {
+    [angora_client]
+    [angora_local_node]
+    [angora_remote_node]
+    [angora_command_processor_node]
+}
+
+@enduml
