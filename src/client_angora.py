@@ -9,9 +9,12 @@ class GradioROS2Node(Node):
         super().__init__('gradio_ros2_node')
         self.capra_style = CapraStyle()
 
+        self.model_available = ["local-small", "local-medium", "capra-large", "GPT3.5"]
+
         self.launch_gradio_interface()
 
     def launch_gradio_interface(self):
+
         def llm_prediction_api(message, history):
             url = "http://localhost:8000/chat/"
             data = {"message": message, "history": history}
@@ -29,14 +32,14 @@ class GradioROS2Node(Node):
 
             with gr.Row():
                 authority_dropdown = gr.Dropdown(["ROS only", "Read Only", "Full authority"], type="index", value="Full authority", label="Permission level")
-                database_checkbox = gr.Checkbox(label="Database (knowledge)", value=True)
-                record_button = gr.Button("Record", variant="primary")
-                stop_recording = gr.Button("Stop", variant="danger")
+                model_dropdown = gr.Dropdown(self.model_available, type="index", value=self.model_available[0], label="Model")
+                ip_address_textbox = gr.Textbox(label="IP Address", placeholder="localhost", lines=1)                
+                database_checkbox = gr.Checkbox(label="Database (knowledge)", value=False)
                 input_audio = gr.Audio(label="Auto listening", sources=["microphone"], streaming=True)
-
+                
             with gr.Row():
                 label = gr.Textbox(label="Transcription", lines=10)
-                with gr.Blocks():
+                with gr.Column():
                     chat_interface = gr.ChatInterface(llm_prediction_api, submit_btn=send_btn, chatbot=chatbot)
         
         web_interface.launch(allowed_paths=["assets"], share=False)
