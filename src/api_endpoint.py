@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from angora import Angora  # Ensure this imports your modified Angora class
+from angora import Angora
 import uvicorn
 
 app = FastAPI()
@@ -8,11 +8,22 @@ app = FastAPI()
 class ChatRequest(BaseModel):
     message: str
     history: list
+    model: str
 
 @app.post("/chat/")
 async def chat(chat_request: ChatRequest):
     try:
-        angora_instance = Angora(model_name="microsoft/DialoGPT-small")  # Consider passing parameters or initializing this elsewhere
+        print(chat_request.message, chat_request.history, chat_request.model)
+        if chat_request.model == "local-small":
+            angora_instance = Angora("microsoft/phi-2") 
+        elif chat_request.model == "local-medium":
+            angora_instance = Angora("teknium/OpenHermes-2.5-Mistral-7B") 
+        elif chat_request.model == "capra-large":
+            angora_instance = Angora("mistralai/Mixtral-8x7B-Instruct-v0.1") 
+        else:
+            angora_instance = Angora(model_name="microsoft/DialoGPT-small") 
+
+
         response_generator = angora_instance.predict(chat_request.message, chat_request.history)
         responses = []
         for response in response_generator:
