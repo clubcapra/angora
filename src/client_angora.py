@@ -43,7 +43,6 @@ class GradioROS2Node(Node):
                 ip_address_textbox = gr.Textbox(label="IP Address", value="localhost", lines=1)                
                 database_checkbox = gr.Checkbox(label="Database (knowledge)", value=False)
                 input_audio = gr.Audio(label="Auto listening", sources=["microphone"], streaming=True)
-                update_button = gr.Button("Update Model and IP")
                 
                 model_dropdown.change(lambda x: self.params.update({"model": x}), model_dropdown, None)
                 authority_dropdown.change(lambda x: self.params.update({"permission": x}), authority_dropdown, None)

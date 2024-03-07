@@ -15,7 +15,7 @@ async def chat(chat_request: ChatRequest):
     try:
         print(chat_request.message, chat_request.history, chat_request.model)
         if chat_request.model == "local-small":
-            angora_instance = Angora("microsoft/phi-2") 
+            angora_instance = Angora("tog/TinyLlama-1.1B-alpaca-chat-v1.5") 
         elif chat_request.model == "local-medium":
             angora_instance = Angora("teknium/OpenHermes-2.5-Mistral-7B") 
         elif chat_request.model == "capra-large":

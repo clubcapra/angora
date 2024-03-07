@@ -32,6 +32,8 @@ class Angora():
         messages = "".join(["".join(["\n<human>:"+item[0], "\n<bot>:"+item[1]])  # curr_system_message +
                             for item in history_transformer_format])
         
+        print(messages)
+
         streamer = TextIteratorStreamer(
             self.tokenizer, timeout=10., skip_prompt=True, skip_special_tokens=True)
 
